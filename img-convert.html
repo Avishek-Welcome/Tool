@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online image converter tool for JPG, PNG, and WEBP formats. Convert images quickly and easily with full responsive support.">
+    <meta name="keywords" content="image converter, JPG converter, PNG converter, WEBP converter, online image conversion">
+    <title>Online Image Converter - JPG, PNG, WEBP Converter Tool</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .ad-banner {
+            text-align: center;
+            margin: 20px 0;
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .converter-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        .format-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .format-option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .format-option.selected {
+            border-color: #007bff;
+            background-color: #e7f1ff;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .file-input {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #downloadLink {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .converter-box {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- AdSense Header Banner -->
+        <div class="ad-banner">
+            <!-- Replace with your Google AdSense Ad Unit ID -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <div class="converter-box">
+            <h1>Online Image Converter</h1>
+            <p>Convert between JPG, PNG, and WEBP formats</p>
+            
+            <div class="format-selector">
+                <div class="format-option">
+                    <h3>Source Format</h3>
+                    <label><input type="radio" name="sourceFormat" value="jpg" required> JPG</label>
+                    <label><input type="radio" name="sourceFormat" value="png"> PNG</label>
+                    <label><input type="radio" name="sourceFormat" value="webp"> WEBP</label>
+                </div>
+
+                <div class="format-option">
+                    <h3>Target Format</h3>
+                    <label><input type="radio" name="targetFormat" value="jpg" required> JPG</label>
+                    <label><input type="radio" name="targetFormat" value="png"> PNG</label>
+                    <label><input type="radio" name="targetFormat" value="webp"> WEBP</label>
+                </div>
+            </div>
+
+            <div class="file-input">
+                <input type="file" id="imageInput" accept="image/*">
+                <p>Drag and drop or click to upload image</p>
+            </div>
+
+            <button onclick="convertImage()">Convert Now</button>
+            <a id="downloadLink" style="display: none;">Download Converted Image</a>
+        </div>
+
+        <!-- AdSense Footer Banner -->
+        <div class="ad-banner">
+            <!-- Replace with your Google AdSense Ad Unit ID -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+
+    <script>
+        function validateFile() {
+            const sourceFormat = document.querySelector('input[name="sourceFormat"]:checked').value;
+            const file = document.getElementById('imageInput').files[0];
+            const allowedTypes = {
+                jpg: 'image/jpeg',
+                png: 'image/png',
+                webp: 'image/webp'
+            };
+
+            if (!file.type.match(allowedTypes[sourceFormat])) {
+                alert(`Selected file does not match ${sourceFormat.toUpperCase()} format`);
+                return false;
+            }
+            return true;
+        }
+
+        function convertImage() {
+            if (!validateFile()) return;
+
+            const targetFormat = document.querySelector('input[name="targetFormat"]:checked').value;
+            const file = document.getElementById('imageInput').files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+
+                    canvas.toBlob((blob) => {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.getElementById('downloadLink');
+                        link.href = url;
+                        link.download = `converted-image.${targetFormat}`;
+                        link.style.display = 'block';
+                    }, `image/${targetFormat}`, 0.9);
+                };
+            };
+
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>
